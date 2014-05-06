@@ -2,7 +2,7 @@
  * Basic kernel module using a timer and GPIOs to flash a LED.
  *
  * Author:
- * 	Stefan Wendler (devnull@kaltpost.de)
+ *	Stefan Wendler (devnull@kaltpost.de)
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -15,7 +15,7 @@
  *
  */
 
-#include <linux/module.h>	
+#include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/sched.h>
 #include <linux/timer.h>
@@ -33,11 +33,11 @@ static void blink_timer_func(unsigned long data)
 {
 	printk(KERN_INFO "%s\n", __func__);
 
-	gpio_set_value(LED1, data); 
-	
+	gpio_set_value(LED1, data);
+
 	/* schedule next execution */
-	blink_timer.data = !data;						// makes the LED toggle 
-	blink_timer.expires = jiffies + (1*HZ); 		// 1 sec.
+	blink_timer.data = !data;						// makes the LED toggle
+	blink_timer.expires = jiffies + (1*HZ);			// 1 sec.
 	add_timer(&blink_timer);
 }
 
@@ -50,7 +50,7 @@ static int __init gpiomod_init(void)
 
 	printk(KERN_INFO "%s\n", __func__);
 
-	// register, turn off 
+	// register, turn off
 	ret = gpio_request_one(LED1, GPIOF_OUT_INIT_LOW, "led1");
 
 	if (ret) {
@@ -63,7 +63,7 @@ static int __init gpiomod_init(void)
 
 	blink_timer.function = blink_timer_func;
 	blink_timer.data = 1L;							// initially turn LED on
-	blink_timer.expires = jiffies + (1*HZ); 		// 1 sec.
+	blink_timer.expires = jiffies + (1*HZ);			// 1 sec.
 	add_timer(&blink_timer);
 
 	return ret;
@@ -80,9 +80,9 @@ static void __exit gpiomod_exit(void)
 	del_timer_sync(&blink_timer);
 
 	// turn LED off
-	gpio_set_value(LED1, 0); 
-	
-	// unregister GPIO 
+	gpio_set_value(LED1, 0);
+
+	// unregister GPIO
 	gpio_free(LED1);
 }
 
