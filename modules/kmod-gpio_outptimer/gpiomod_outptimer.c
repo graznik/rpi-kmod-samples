@@ -36,8 +36,8 @@ static void blink_timer_func(unsigned long data)
 	gpio_set_value(LED1, data);
 
 	/* schedule next execution */
-	blink_timer.data = !data;						// makes the LED toggle
-	blink_timer.expires = jiffies + (1*HZ);			// 1 sec.
+	blink_timer.data = !data;                /* makes the LED toggle */
+	blink_timer.expires = jiffies + (1*HZ);	 /* 1 sec.               */
 	add_timer(&blink_timer);
 }
 
@@ -50,7 +50,7 @@ static int __init gpiomod_init(void)
 
 	printk(KERN_INFO "%s\n", __func__);
 
-	// register, turn off
+	/* register, turn off */
 	ret = gpio_request_one(LED1, GPIOF_OUT_INIT_LOW, "led1");
 
 	if (ret) {
@@ -62,8 +62,8 @@ static int __init gpiomod_init(void)
 	init_timer(&blink_timer);
 
 	blink_timer.function = blink_timer_func;
-	blink_timer.data = 1L;							// initially turn LED on
-	blink_timer.expires = jiffies + (1*HZ);			// 1 sec.
+	blink_timer.data = 1L;			  /* initially turn LED on */
+	blink_timer.expires = jiffies + (1*HZ);	  /* 1 sec.                */
 	add_timer(&blink_timer);
 
 	return ret;
@@ -76,13 +76,13 @@ static void __exit gpiomod_exit(void)
 {
 	printk(KERN_INFO "%s\n", __func__);
 
-	// deactivate timer if running
+	/* deactivate timer if running */
 	del_timer_sync(&blink_timer);
 
-	// turn LED off
+	/* turn LED off */
 	gpio_set_value(LED1, 0);
 
-	// unregister GPIO
+	/* unregister GPIO */
 	gpio_free(LED1);
 }
 
