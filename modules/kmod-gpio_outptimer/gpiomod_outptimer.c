@@ -31,7 +31,7 @@ static struct timer_list blink_timer;
  */
 static void blink_timer_func(unsigned long data)
 {
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	gpio_set_value(LED1, data);
 
@@ -48,13 +48,13 @@ static int __init gpiomod_init(void)
 {
 	int ret = 0;
 
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	/* register, turn off */
 	ret = gpio_request_one(LED1, GPIOF_OUT_INIT_LOW, "led1");
 
 	if (ret) {
-		printk(KERN_ERR "Unable to request GPIOs: %d\n", ret);
+		pr_err("Unable to request GPIOs: %d\n", ret);
 		return ret;
 	}
 
@@ -74,7 +74,7 @@ static int __init gpiomod_init(void)
  */
 static void __exit gpiomod_exit(void)
 {
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	/* deactivate timer if running */
 	del_timer_sync(&blink_timer);

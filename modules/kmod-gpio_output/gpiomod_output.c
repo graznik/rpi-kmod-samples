@@ -35,13 +35,13 @@ static int __init gpiomod_init(void)
 {
 	int ret = 0;
 
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	// register LED GPIOs, turn LEDs on
 	ret = gpio_request_array(leds, ARRAY_SIZE(leds));
 
 	if (ret) {
-		printk(KERN_ERR "Unable to request GPIOs: %d\n", ret);
+		pr_err("Unable to request GPIOs: %d\n", ret);
 	}
 
 	return ret;
@@ -54,7 +54,7 @@ static void __exit gpiomod_exit(void)
 {
 	int i;
 
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	// turn all LEDs off
 	for(i = 0; i < ARRAY_SIZE(leds); i++) {

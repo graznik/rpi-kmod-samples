@@ -23,7 +23,7 @@
  */
 static int __init basicmod_init(void)
 {
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	/* 
  	 * A non 0 return means init_module failed; module can't be loaded. 
@@ -36,7 +36,7 @@ static int __init basicmod_init(void)
  */
 static void __exit basicmod_exit(void)
 {
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 }
 
 MODULE_LICENSE("GPL");

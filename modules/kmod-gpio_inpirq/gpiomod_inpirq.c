@@ -56,13 +56,13 @@ static int __init gpiomode_init(void)
 {
 	int ret = 0;
 
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	// register LED gpios
 	ret = gpio_request_array(leds, ARRAY_SIZE(leds));
 
 	if (ret) {
-		printk(KERN_ERR "Unable to request GPIOs for LEDs: %d\n", ret);
+		pr_err("Unable to request GPIOs for LEDs: %d\n", ret);
 		return ret;
 	}
 	
@@ -70,27 +70,27 @@ static int __init gpiomode_init(void)
 	ret = gpio_request_array(buttons, ARRAY_SIZE(buttons));
 
 	if (ret) {
-		printk(KERN_ERR "Unable to request GPIOs for BUTTONs: %d\n", ret);
+		pr_err("Unable to request GPIOs for BUTTONs: %d\n", ret);
 		goto fail1;
 	}
 
-	printk(KERN_INFO "Current button1 value: %d\n", gpio_get_value(buttons[0].gpio));
+	pr_info("Current button1 value: %d\n", gpio_get_value(buttons[0].gpio));
 	
 	ret = gpio_to_irq(buttons[0].gpio);
 
 	if(ret < 0) {
-		printk(KERN_ERR "Unable to request IRQ: %d\n", ret);
+		pr_err("Unable to request IRQ: %d\n", ret);
 		goto fail2;
 	}
 
 	button_irqs[0] = ret;
 
-	printk(KERN_INFO "Successfully requested BUTTON1 IRQ # %d\n", button_irqs[0]);
+	pr_info("Successfully requested BUTTON1 IRQ # %d\n", button_irqs[0]);
 
 	ret = request_irq(button_irqs[0], button_isr, IRQF_TRIGGER_RISING | IRQF_DISABLED, "gpiomod#button1", NULL);
 
 	if(ret) {
-		printk(KERN_ERR "Unable to request IRQ: %d\n", ret);
+		pr_err("Unable to request IRQ: %d\n", ret);
 		goto fail2;
 	}
 
@@ -98,18 +98,18 @@ static int __init gpiomode_init(void)
 	ret = gpio_to_irq(buttons[1].gpio);
 
 	if(ret < 0) {
-		printk(KERN_ERR "Unable to request IRQ: %d\n", ret);
+		pr_err("Unable to request IRQ: %d\n", ret);
 		goto fail2;
 	}
 		
 	button_irqs[1] = ret;
 
-	printk(KERN_INFO "Successfully requested BUTTON2 IRQ # %d\n", button_irqs[1]);
+	pr_info("Successfully requested BUTTON2 IRQ # %d\n", button_irqs[1]);
 
 	ret = request_irq(button_irqs[1], button_isr, IRQF_TRIGGER_RISING | IRQF_DISABLED, "gpiomod#button2", NULL);
 
 	if(ret) {
-		printk(KERN_ERR "Unable to request IRQ: %d\n", ret);
+		pr_err("Unable to request IRQ: %d\n", ret);
 		goto fail3;
 	}
 
@@ -135,7 +135,7 @@ static void __exit gpiomode_exit(void)
 {
 	int i;
 
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	// free irqs
 	free_irq(button_irqs[0], NULL);

@@ -33,7 +33,7 @@ static void blink_tasklet(unsigned long data)
 {
 	int i;
 
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	printk("Tasklet started\n");
 
@@ -60,13 +60,13 @@ static int __init gpiomod_init(void)
 {
 	int ret = 0;
 
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	// register, turn on
 	ret = gpio_request_array(leds, ARRAY_SIZE(leds));
 
 	if (ret) {
-		printk(KERN_ERR "Unable to request GPIOs: %d\n", ret);
+		pr_err("Unable to request GPIOs: %d\n", ret);
 		return ret;
 	}
 
@@ -82,7 +82,7 @@ static void __exit gpiomod_exit(void)
 {
 	int i;
 
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	tasklet_kill(&tl_descr);
 

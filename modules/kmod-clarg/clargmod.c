@@ -46,18 +46,18 @@ static int __init clargmod_init(void)
 {
 	int i;
 
-	printk(KERN_INFO "%s\n=============\n", __func__);
-	printk(KERN_INFO "myshort is a short integer: %hd\n", myshort);
-	printk(KERN_INFO "myint is an integer: %d\n", myint);
-	printk(KERN_INFO "mylong is a long integer: %ld\n", mylong);
-	printk(KERN_INFO "mystring is a string: %s\n", mystring);
+	pr_info("%s\n=============\n", __func__);
+	pr_info("myshort is a short integer: %hd\n", myshort);
+	pr_info("myint is an integer: %d\n", myint);
+	pr_info("mylong is a long integer: %ld\n", mylong);
+	pr_info("mystring is a string: %s\n", mystring);
 
 	for (i = 0; i < (sizeof myintArray / sizeof (int)); i++)
 	{
-		printk(KERN_INFO "myintArray[%d] = %d\n", i, myintArray[i]);
+		pr_info("myintArray[%d] = %d\n", i, myintArray[i]);
 	}
 
-	printk(KERN_INFO "got %d arguments for myintArray.\n", arr_argc);
+	pr_info("got %d arguments for myintArray.\n", arr_argc);
 
 	return 0;
 }
@@ -67,7 +67,7 @@ static int __init clargmod_init(void)
  */
 static void __exit clargmod_exit(void)
 {
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 }
 
 MODULE_LICENSE("GPL");

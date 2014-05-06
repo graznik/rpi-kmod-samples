@@ -38,9 +38,9 @@ int pdevmod_probe(struct platform_device *dev)
 	// retrieve platform data
 	struct pdevmod_data *pd = (struct pdevmod_data *)(dev->dev.platform_data);
 
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
-	printk(KERN_INFO "Platform says: %s; %d\n", pd->greeting, pd->number);
+	pr_info("Platform says: %s; %d\n", pd->greeting, pd->number);
 
 	return 0;
 }
@@ -50,7 +50,7 @@ int pdevmod_probe(struct platform_device *dev)
  */
 int pdevmod_remove(struct platform_device *dev)
 {
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	return 0;
 }
@@ -72,12 +72,12 @@ static int __init pdevmod_init(void)
 {
     int ret;
 
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
     ret = platform_driver_register(&pdevmod_driver);
 
 	if(ret) {
-		printk(KERN_ERR "Unable to register driver\n");
+		pr_err("Unable to register driver\n");
 		return ret;
 	}
 
@@ -89,7 +89,7 @@ static int __init pdevmod_init(void)
  */
 static void __exit pdevmod_exit(void)
 {
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
     platform_driver_unregister(&pdevmod_driver);
 }

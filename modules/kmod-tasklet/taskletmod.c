@@ -22,7 +22,7 @@
 
 static void tasklet_func(unsigned long data)
 {
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	printk("Tasklet started\n");
 	mdelay(1000);
@@ -36,7 +36,7 @@ DECLARE_TASKLET(tl_descr, tasklet_func, 0L);
  */
 static int __init taskletmod_init(void)
 {
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	tasklet_schedule(&tl_descr);
 
@@ -48,7 +48,7 @@ static int __init taskletmod_init(void)
  */
 static void __exit taskletmod_exit(void)
 {
-	printk(KERN_INFO "%s\n", __func__);
+	pr_info("%s\n", __func__);
 
 	tasklet_kill(&tl_descr);
 }
