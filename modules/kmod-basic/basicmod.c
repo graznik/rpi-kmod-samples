@@ -2,7 +2,7 @@
  * Basic kernel module.
  *
  * Author:
- * 	Stefan Wendler (devnull@kaltpost.de)
+ *	Stefan Wendler (devnull@kaltpost.de)
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -25,9 +25,9 @@ static int __init basicmod_init(void)
 {
 	pr_info("%s\n", __func__);
 
-	/* 
- 	 * A non 0 return means init_module failed; module can't be loaded. 
- 	 */
+	/*
+	 * A non 0 return means init_module failed; module can't be loaded.
+	 */
 	return 0;
 }
 

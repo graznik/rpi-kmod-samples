@@ -2,7 +2,7 @@
  * Basic kernel module for platform device.
  *
  * Author:
- * 	Stefan Wendler (devnull@kaltpost.de)
+ *	Stefan Wendler (devnull@kaltpost.de)
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -15,27 +15,27 @@
  *
  */
 
-#include <linux/module.h>	
-#include <linux/kernel.h>	
+#include <linux/module.h>
+#include <linux/kernel.h>
 #include <linux/platform_device.h>
 
-/* 
- * Platform device data as passed in from platform 
+/*
+ * Platform device data as passed in from platform
  *
  * Normally this would go into a header file shared
  * between the module and the board definition.
  */
 struct pdevmod_data {
-    char *greeting;
-    int   number;
+	char *greeting;
+	int   number;
 };
 
-/* 
- * Probe is called when the driver is about to be attached 
+/*
+ * Probe is called when the driver is about to be attached
  */
 int pdevmod_probe(struct platform_device *dev)
 {
-	// retrieve platform data
+	/* retrieve platform data */
 	struct pdevmod_data *pd = (struct pdevmod_data *)(dev->dev.platform_data);
 
 	pr_info("%s\n", __func__);
@@ -70,13 +70,13 @@ static struct platform_driver pdevmod_driver = {
  */
 static int __init pdevmod_init(void)
 {
-    int ret;
+	int ret;
 
 	pr_info("%s\n", __func__);
 
-    ret = platform_driver_register(&pdevmod_driver);
+	ret = platform_driver_register(&pdevmod_driver);
 
-	if(ret) {
+	if (ret) {
 		pr_err("Unable to register driver\n");
 		return ret;
 	}
@@ -91,7 +91,7 @@ static void __exit pdevmod_exit(void)
 {
 	pr_info("%s\n", __func__);
 
-    platform_driver_unregister(&pdevmod_driver);
+	platform_driver_unregister(&pdevmod_driver);
 }
 
 MODULE_LICENSE("GPL");

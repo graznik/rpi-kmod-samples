@@ -2,7 +2,7 @@
  * Basic Linux Kernel module using GPIO interrupts.
  *
  * Author:
- * 	Stefan Wendler (devnull@kaltpost.de)
+ *	Stefan Wendler (devnull@kaltpost.de)
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -18,17 +18,17 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/gpio.h>
-#include <linux/interrupt.h> 
+#include <linux/interrupt.h>
 
 /* Define GPIOs for LEDs */
 static struct gpio leds[] = {
-		{  4, GPIOF_OUT_INIT_LOW, "LED 1" },
+	{  4, GPIOF_OUT_INIT_LOW, "LED 1" },
 };
 
 /* Define GPIOs for BUTTONS */
 static struct gpio buttons[] = {
-		{ 17, GPIOF_IN, "BUTTON 1" },	// turns LED on
-		{ 18, GPIOF_IN, "BUTTON 2" },	// turns LED off
+	{ 17, GPIOF_IN, "BUTTON 1" },	/* turns LED on  */
+	{ 18, GPIOF_IN, "BUTTON 2" },	/* turns LED off */
 };
 
 /* Later on, the assigned IRQ numbers for the buttons are stored here */
@@ -39,11 +39,11 @@ static int button_irqs[] = { -1, -1 };
  */
 static irqreturn_t button_isr(int irq, void *data)
 {
-	if(irq == button_irqs[0] && !gpio_get_value(leds[0].gpio)) {
-			gpio_set_value(leds[0].gpio, 1);
+	if (irq == button_irqs[0] && !gpio_get_value(leds[0].gpio)) {
+		gpio_set_value(leds[0].gpio, 1);
 	}
-	else if(irq == button_irqs[1] && gpio_get_value(leds[0].gpio)) {
-			gpio_set_value(leds[0].gpio, 0);
+	else if (irq == button_irqs[1] && gpio_get_value(leds[0].gpio)) {
+		gpio_set_value(leds[0].gpio, 0);
 	}
 
 	return IRQ_HANDLED;
@@ -58,15 +58,15 @@ static int __init gpiomode_init(void)
 
 	pr_info("%s\n", __func__);
 
-	// register LED gpios
+	/* register LED gpios */
 	ret = gpio_request_array(leds, ARRAY_SIZE(leds));
 
 	if (ret) {
 		pr_err("Unable to request GPIOs for LEDs: %d\n", ret);
 		return ret;
 	}
-	
-	// register BUTTON gpios
+
+	/* register BUTTON gpios */
 	ret = gpio_request_array(buttons, ARRAY_SIZE(buttons));
 
 	if (ret) {
@@ -75,10 +75,10 @@ static int __init gpiomode_init(void)
 	}
 
 	pr_info("Current button1 value: %d\n", gpio_get_value(buttons[0].gpio));
-	
+
 	ret = gpio_to_irq(buttons[0].gpio);
 
-	if(ret < 0) {
+	if (ret < 0) {
 		pr_err("Unable to request IRQ: %d\n", ret);
 		goto fail2;
 	}
@@ -89,7 +89,7 @@ static int __init gpiomode_init(void)
 
 	ret = request_irq(button_irqs[0], button_isr, IRQF_TRIGGER_RISING | IRQF_DISABLED, "gpiomod#button1", NULL);
 
-	if(ret) {
+	if (ret) {
 		pr_err("Unable to request IRQ: %d\n", ret);
 		goto fail2;
 	}
@@ -97,35 +97,35 @@ static int __init gpiomode_init(void)
 
 	ret = gpio_to_irq(buttons[1].gpio);
 
-	if(ret < 0) {
+	if (ret < 0) {
 		pr_err("Unable to request IRQ: %d\n", ret);
 		goto fail2;
 	}
-		
+
 	button_irqs[1] = ret;
 
 	pr_info("Successfully requested BUTTON2 IRQ # %d\n", button_irqs[1]);
 
 	ret = request_irq(button_irqs[1], button_isr, IRQF_TRIGGER_RISING | IRQF_DISABLED, "gpiomod#button2", NULL);
 
-	if(ret) {
+	if (ret) {
 		pr_err("Unable to request IRQ: %d\n", ret);
 		goto fail3;
 	}
 
 	return 0;
 
-// cleanup what has been setup so far
+	/* cleanup what has been setup so far */
 fail3:
 	free_irq(button_irqs[0], NULL);
 
-fail2: 
+fail2:
 	gpio_free_array(buttons, ARRAY_SIZE(leds));
 
 fail1:
 	gpio_free_array(leds, ARRAY_SIZE(leds));
 
-	return ret;	
+	return ret;
 }
 
 /**
@@ -137,16 +137,16 @@ static void __exit gpiomode_exit(void)
 
 	pr_info("%s\n", __func__);
 
-	// free irqs
+	/* free irqs */
 	free_irq(button_irqs[0], NULL);
 	free_irq(button_irqs[1], NULL);
-	
-	// turn all LEDs off
-	for(i = 0; i < ARRAY_SIZE(leds); i++) {
-		gpio_set_value(leds[i].gpio, 0); 
+
+	/* turn all LEDs off */
+	for (i = 0; i < ARRAY_SIZE(leds); i++) {
+		gpio_set_value(leds[i].gpio, 0);
 	}
-	
-	// unregister
+
+	/* unregister */
 	gpio_free_array(leds, ARRAY_SIZE(leds));
 	gpio_free_array(buttons, ARRAY_SIZE(buttons));
 }

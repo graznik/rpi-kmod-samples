@@ -2,7 +2,7 @@
  * Basic Linux Kernel module using a tasklet to blink LEDs.
  *
  * Author:
- * 	Stefan Wendler (devnull@kaltpost.de)
+ *	Stefan Wendler (devnull@kaltpost.de)
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -15,7 +15,7 @@
  *
  */
 
-#include <linux/module.h>	
+#include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/delay.h>
 #include <linux/interrupt.h>
@@ -23,9 +23,9 @@
 
 /* Define pins, directin and inital state of GPIOs for LEDs */
 static struct gpio leds[] = {
-		{  4, GPIOF_OUT_INIT_LOW, "LED 1" },
-		{ 25, GPIOF_OUT_INIT_LOW, "LED 2" },
-		{ 24, GPIOF_OUT_INIT_LOW, "LED 3" },
+	{  4, GPIOF_OUT_INIT_LOW, "LED 1" },
+	{ 25, GPIOF_OUT_INIT_LOW, "LED 2" },
+	{ 24, GPIOF_OUT_INIT_LOW, "LED 3" },
 };
 
 /* Tasklet to blink the LEDs */
@@ -37,18 +37,17 @@ static void blink_tasklet(unsigned long data)
 
 	printk("Tasklet started\n");
 
-	for(i = 0; i < ARRAY_SIZE(leds); i++) {
-
-		if(i - 1 >= 0) {
-			gpio_set_value(leds[i - 1].gpio, 0); 
+	for (i = 0; i < ARRAY_SIZE(leds); i++) {
+		if (i - 1 >= 0) {
+			gpio_set_value(leds[i - 1].gpio, 0);
 		}
-		gpio_set_value(leds[i].gpio, 1); 
+		gpio_set_value(leds[i].gpio, 1);
 		mdelay(500);
 	}
 
-	gpio_set_value(leds[i - 1].gpio, 0); 
+	gpio_set_value(leds[i - 1].gpio, 0);
 
-	printk("Tasklet ended\n");	
+	printk("Tasklet ended\n");
 }
 
 DECLARE_TASKLET(tl_descr, blink_tasklet, 0L);
@@ -62,7 +61,7 @@ static int __init gpiomod_init(void)
 
 	pr_info("%s\n", __func__);
 
-	// register, turn on
+	/* register, turn on */
 	ret = gpio_request_array(leds, ARRAY_SIZE(leds));
 
 	if (ret) {
@@ -86,12 +85,12 @@ static void __exit gpiomod_exit(void)
 
 	tasklet_kill(&tl_descr);
 
-	// turn all off
-	for(i = 0; i < ARRAY_SIZE(leds); i++) {
-		gpio_set_value(leds[i].gpio, 0); 
+	/* turn all off */
+	for (i = 0; i < ARRAY_SIZE(leds); i++) {
+		gpio_set_value(leds[i].gpio, 0);
 	}
-	
-	// unregister
+
+	/* unregister */
 	gpio_free_array(leds, ARRAY_SIZE(leds));
 }
 

@@ -23,9 +23,9 @@
  * Struct defining pins, direction and inital state 
  */
 static struct gpio leds[] = {
-		{  4, GPIOF_OUT_INIT_HIGH, "LED 1" },
-		{ 25, GPIOF_OUT_INIT_HIGH, "LED 2" },
-		{ 24, GPIOF_OUT_INIT_HIGH, "LED 3" },
+	{  4, GPIOF_OUT_INIT_HIGH, "LED 1" },
+	{ 25, GPIOF_OUT_INIT_HIGH, "LED 2" },
+	{ 24, GPIOF_OUT_INIT_HIGH, "LED 3" },
 };
 
 /*
@@ -37,7 +37,7 @@ static int __init gpiomod_init(void)
 
 	pr_info("%s\n", __func__);
 
-	// register LED GPIOs, turn LEDs on
+	/* register LED GPIOs, turn LEDs on */
 	ret = gpio_request_array(leds, ARRAY_SIZE(leds));
 
 	if (ret) {
@@ -56,12 +56,12 @@ static void __exit gpiomod_exit(void)
 
 	pr_info("%s\n", __func__);
 
-	// turn all LEDs off
-	for(i = 0; i < ARRAY_SIZE(leds); i++) {
+	/* turn all LEDs off */
+	for (i = 0; i < ARRAY_SIZE(leds); i++) {
 		gpio_set_value(leds[i].gpio, 0); 
 	}
 	
-	// unregister all GPIOs
+	/* unregister all GPIOs */
 	gpio_free_array(leds, ARRAY_SIZE(leds));
 }
 
